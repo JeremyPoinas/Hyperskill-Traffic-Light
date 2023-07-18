@@ -12,12 +12,34 @@ public class TrafficSystem {
     int setRoads() {
         System.out.println("Input the number of roads:");
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
+        int roads;
+        while (scanner.hasNext()) {
+            if (scanner.hasNextInt()) {
+                roads = scanner.nextInt();
+                if (roads > 0) {
+                    return roads;
+                }
+            }
+            scanner.nextLine();
+            System.out.print("Error! Incorrect input. Try again: ");
+        }
+        return 0;
     }
     int setInterval() {
         System.out.println("Input the interval:");
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
+        int interval;
+        while (scanner.hasNext()) {
+            if (scanner.hasNextInt()) {
+                interval = scanner.nextInt();
+                if (interval > 0) {
+                    return interval;
+                }
+            }
+            scanner.nextLine();
+            System.out.print("Error! Incorrect input. Try again: ");
+        }
+        return 0;
     }
     String treatAction(int input) {
         String message = null;

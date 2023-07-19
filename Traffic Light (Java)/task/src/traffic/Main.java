@@ -1,23 +1,42 @@
 package traffic;
 
-import traffic.TrafficSystem;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, InterruptedException {
+
     printWelcomeMessage();
-    TrafficSystem trafficSystem = new TrafficSystem();
+    QueueThread queueThread = new QueueThread();
+    queueThread.setRoads();
+    queueThread.setInterval();
+    queueThread.start();
+
     int input = getInput();
-    String message;
 
     while (input != 0) {
-      message = trafficSystem.treatAction(input);
-      System.out.println(message);
-      System.in.read();
+      switch (input) {
+        case 1 -> {
+          queueThread.addRoad();
+          System.out.println("Road added");
+          System.in.read();
+        }
+        case 2 -> {
+          queueThread.deleteRoad();
+          System.out.println("Road deleted");
+          System.in.read();
+        }
+        case 3 -> {
+          queueThread.setSystemState(QueueThread.State.SYSTEM);
+          System.in.read();
+          queueThread.setSystemState(QueueThread.State.MENU);
+        }
+      }
       input = getInput();
     }
+    queueThread.end();
+    queueThread.join();
     System.out.println("Bye!");
   }
 
@@ -49,7 +68,7 @@ public class Main {
               : new ProcessBuilder("clear");
       clearCommand.inheritIO().start().waitFor();
     }
-    catch (InterruptedException | IOException e) {}
+    catch (InterruptedException | IOException ignored) {}
   }
 
   static void printMenu() {

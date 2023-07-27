@@ -16,12 +16,10 @@ public class Main {
       switch (input) {
         case 1 -> {
           queueThread.addRoad();
-          System.out.println("Road added");
           System.in.read();
         }
         case 2 -> {
           queueThread.deleteRoad();
-          System.out.println("Road deleted");
           System.in.read();
         }
         case 3 -> {

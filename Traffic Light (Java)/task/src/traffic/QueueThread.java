@@ -1,5 +1,6 @@
 package traffic;
 
+import java.util.ArrayDeque;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -7,7 +8,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class QueueThread extends Thread {
 
-    private int roads;
+    private ArrayDeque<String> roads;
+
+    int roadsCapacity;
 
     private int interval;
 
@@ -59,8 +62,11 @@ public class QueueThread extends Thread {
 
     void printState() {
         System.out.printf("! %ds. have passed since system startup !\n", secondsSinceCreation);
-        System.out.printf("! Number of roads: %d !\n", roads);
+        System.out.printf("! Number of roads: %d !\n", roadsCapacity);
         System.out.printf("! Interval: %d !\n", interval);
+        for (String roadName: roads) {
+            System.out.println(roadName);
+        }
         System.out.println("! Press \"Enter\" to open menu !");
     }
 
@@ -68,12 +74,30 @@ public class QueueThread extends Thread {
         this.systemState = systemState;
     }
 
+    public int getRoadSize() {
+        return this.roads.size();
+    }
+
     public void addRoad() {
-        this.roads++;
+        System.out.println("Input road name:");
+        Scanner scanner = new Scanner(System.in);
+        String roadName;
+        roadName = scanner.nextLine();
+        if (this.getRoadSize() < this.roadsCapacity) {
+            this.roads.add(roadName);
+            System.out.printf("%s added!\n", roadName);
+        } else {
+            System.out.println("Queue is full");
+        }
     }
 
     public void deleteRoad() {
-        this.roads--;
+        if (this.getRoadSize() > 0) {
+            String roadName = this.roads.poll();
+            System.out.printf("%s deleted!\n", roadName);
+        } else {
+            System.out.println("Queue is empty");
+        }
     }
 
     void setRoads() {
@@ -84,7 +108,8 @@ public class QueueThread extends Thread {
             if (scanner.hasNextInt()) {
                 input = scanner.nextInt();
                 if (input > 0) {
-                    this.roads = input;
+                    this.roads = new ArrayDeque<>(input);
+                    this.roadsCapacity = input;
                     return;
                 }
             }

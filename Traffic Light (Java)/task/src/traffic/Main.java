@@ -9,9 +9,6 @@ public class Main {
 
     printWelcomeMessage();
     QueueThread queueThread = new QueueThread();
-    queueThread.setRoads();
-    queueThread.setInterval();
-    queueThread.start();
 
     int input = getInput();
 

@@ -22,7 +22,10 @@ public class QueueThread extends Thread {
     private final AtomicBoolean running = new AtomicBoolean(false);
 
     public QueueThread() {
-        super("QueueThread");
+        this.setRoads();
+        this.setInterval();
+        this.setName("QueueThread");
+        this.start();
     }
 
     @Override
@@ -45,6 +48,9 @@ public class QueueThread extends Thread {
             }
         };
         timer.scheduleAtFixedRate(timertask, 1000, 1000);
+        while (running.get()) {
+
+        }
     }
 
     public void end() {
